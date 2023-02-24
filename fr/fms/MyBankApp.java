@@ -77,53 +77,52 @@ public class MyBankApp {
 			System.out.println("1:versement - 2:retrait - 3:virement - 4:information sur ce compte - 5:liste des opérations - 6:sortir");
 
 			choice=Integer.parseInt(scan.nextLine());
-
+boolean exception=true;
+try{ //TODO
 			switch (choice) {
-			//TODO try{ ???
+			 
 			case 1:
 				System.out.println("versement");
 				
-				while(true){
-					try {
+				while(exception){
+					
 						System.out.printf("saisissez un montant à verser sur le compte");
 						amout=Double.parseDouble(scan.nextLine());
 						bankJob.pay(currentaAccId, amout);//IllegalArgumentException si amount saisi != chiffre
-						break;
-					}
-					catch (IllegalArgumentException e) {//
-						System.out.println("entrée non correcte");
-					}
+						exception=false;
+					
+					
 				}
 				break;
 			case 2:
 				System.out.println("retrait");
-				while(true){
-					try {
+				while(exception){
+					
 						System.out.printf("saisissez un montant à retirer sur le compte");
 						amout=Double.parseDouble(scan.nextLine());
-						bankJob.withdraw(currentaAccId, amout);//IllegalArgumentException si amount saisi != chiffre
-						break;
-					}
-					catch (Exception e) {//
-						System.out.println("Vous avez depassé vos capacité de retrait !");
-					}
+						if (bankJob.withdraw(currentaAccId, amout)==false) {
+							exception=true;
+							throw new Exception("trow1");
+							
+						}
+						
+						exception=false;
+					
 				}
 				break;
 			case 3:
 				System.out.println("virement");
-				while(true){
-					try {
+				while(exception){
+					
 						System.out.printf("saisissez un montant à retirer sur le compte");
 						amout=Double.parseDouble(scan.nextLine());
 						System.out.printf("saisissez le numero de compte destinataire");
 						withdrawalAccount=Long.parseLong(scan.nextLine());
-						bankJob.transfert(currentaAccId, withdrawalAccount, amout);//IllegalArgumentException si amount saisi != chiffre
-						break;
-					}
+						bankJob.transfert(currentaAccId, withdrawalAccount, amout);
+						exception=false;
+					
 //					throws BankException;
-					catch (Exception e) {//
-						System.out.println("\"vous ne pouvez retirer et verser sur le même compte !");
-					}
+					
 				}
 				break;
 			case 4:
@@ -136,13 +135,26 @@ public class MyBankApp {
 				System.out.println("sortir");
 				break;
 			}
-			//}catch(tout les types d'exception){}
-			
+
+			}catch (IllegalArgumentException e) {//
+				System.out.println("entrée non correcte");
+				exception=true;
+				}
+		
+			catch (Exception e) {//
+			System.out.println("Vous avez depassé vos capacité de retrait !");
+			exception=true;
+			}
+//			catch (Exception e) {//
+//				System.out.println("vous ne pouvez retirer et verser sur le même compte !");
+//				exception=false;
+//			}
 		}
+			
 		scan.close();
 		
 		
-		
+		}
 		
 		
 		
@@ -220,4 +232,4 @@ public class MyBankApp {
 //		for(Transaction trans : bankJob.listTransactions(200300400))
 //			System.out.println(trans);
 	}
-}
+

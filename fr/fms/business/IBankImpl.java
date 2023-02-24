@@ -78,7 +78,7 @@ public class IBankImpl implements IBank {
 	 * @throws Exception 
 	 */
 	@Override
-	public boolean withdraw(long accountId, double amount) throws Exception {			
+	public boolean withdraw(long accountId, double amount) {			
 		Account account = consultAccount(accountId);
 		if(account != null) {
 			double capacity = 0;
@@ -92,7 +92,6 @@ public class IBankImpl implements IBank {
 				account.getListTransactions().add(trans);		// création + ajout d'une opération de retrait
 			}
 			else {
-				throw new Exception();
 				return false;
 			}
 		}	
